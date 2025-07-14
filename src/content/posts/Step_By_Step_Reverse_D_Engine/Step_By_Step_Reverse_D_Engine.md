@@ -1,5 +1,5 @@
 ---
-title: Reverse Engineering the Activate Application
+title: Reverse Engineering to a offline application  
 published: 2025-07-14
 description: A detailed journey into reverse engineering the Activate application
 image: ""
@@ -34,7 +34,7 @@ The presence of these files suggests the application is built on the .NET framew
 ## Initial Analysis with dnSpy
 
 To dive deeper, we load `License.dll` and `Engine.exe` into dnSpy, a powerful .NET decompiler and debugger.
-![alt text](/image1.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image1.png)
 
 1. Set a breakpoint at the application's entry point by pressing **F5** and navigating to **Break At -> Entry Point**.
 2. The entry point reveals the application is a WPF (Windows Presentation Foundation) application, indicated by references to `PresentationBuildTasks`.
@@ -53,20 +53,20 @@ Since the application supports offline activation, we analyze its runtime behavi
 - Obtains the disk serial number using `ManagementBaseObject`.
 - Fetches the system UUID via `ManagementObjectCollection`.
 
-![alt text](/image2.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image2.png)
 
 By setting breakpoints at these functions, we identify their roles in the application. Using dnSpy's **Right Click -> Analyze -> Used By** feature, we locate a hash function critical to the activation process.
 
-![alt text](/image3.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image3.png)
 
 ## Deep Dive into the Hash Function
 
-![alt text](/image4.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image4.png)
 The hash function is not directly responsible for generating the activation code but is used to verify the integrity of the license content. By setting a breakpoint at this function and running the debugger (F5), we inspect the **Locals** view in dnSpy to examine the license structure.
 
 ### License Content Structure
 
-![alt text](/image5.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image5.png)
 By observing A_0 , we find out it is a xml
 The license is an XML file containing:
 
@@ -81,17 +81,17 @@ Full license details are masked for educational purposes.
 
 ## Investigating the Signature
 
-![alt text](/image6.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image6.png)
 The license includes a **Signature** field, likely used to detect modifications to the XML content. During analysis, we identify a static constructor containing an unusual Base64 string, which appears to be a public key used for signature verification.
 
-![alt text](/image7.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image7.png)
 The verification process follows this flow:
 
 1. Remove the signature element from the XML to obtain the content buffer.
 2. Initialize a signer with the public key (Base64 string).
 3. Perform a verification check to ensure the content has not been altered.
 
-![alt text](/image8.png)
+![alt text](/Step_By_Step_Reverse_D_Engine/image8.png)
 If the verification fails, the application throws an exception:
 
 ```csharp
