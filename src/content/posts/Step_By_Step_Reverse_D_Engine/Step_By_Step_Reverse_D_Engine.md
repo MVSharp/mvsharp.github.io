@@ -6,9 +6,7 @@ image: ""
 tags: [CSharp, IL, Reverse Engineering, dnSpy]
 category: CSharp
 draft: false
-lang: C#
-setup: | 
-
+lang: en 
 ---
 
 :::CAUTION
