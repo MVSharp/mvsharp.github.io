@@ -16,7 +16,7 @@ This content is for educational purposes only. Sensitive information has been an
 # Background
 
 Diving into the gritty world of reverse engineering, I’m tearing apart the license activation flow of a .NET-based system packed with License Management Services, LicenseActivation.dll, AppEngineSDK.dll, and Products A, B, and C. These components lean hard on LicenseActivation.dll for license checks, while the products also tap AppEngineSDK.dll for their core juice. My mission? Rip open the black box of license validation, map out its secrets, and expose any weak spots. Using tools like dnSpy and Process Explorer, I’m hunting for the hash functions and UUID checks that guard the system, aiming to outsmart the obfuscation and own the activation process.
-![alt text](./flow.png)
+![alt text](./part1_img/flow.png)
 :::Tips
 Some other services will introduce for later series
 For part 1 series , we just activate the program for futher debugging.
@@ -54,7 +54,7 @@ The presence of these files suggests the application is built on the .NET framew
 ## Initial Analysis with dnSpy
 
 To dive deeper, we load `License activation.dll` and `ProductAEngine.exe` into dnSpy, a powerful .NET decompiler and debugger.
-![alt text](./image1.png)
+![alt text](./part1_img/image1.png)
 
 1. Set a breakpoint at the application's entry point by pressing **F5** and navigating to **Break At -> Entry Point**.
 2. The entry point reveals the application is a WPF (Windows Presentation Foundation) application, indicated by references to `PresentationBuildTasks`.
@@ -76,15 +76,15 @@ Since the application supports offline activation, we analyze its runtime behavi
 By setting breakpoints at these functions, we identify their roles in the application. Using dnSpy's **Right Click -> Analyze -> Used By** feature, we locate a hash function critical to the activation process.
 
 we found
-![alt text](./image2.png)
+![alt text](./part1_img/image2.png)
 For these three function , They will be concat together then as a MD5 hash.
-![alt text](./image3.png)
+![alt text](./part1_img/image3.png)
 
-## Not that Easy
+# Not that Easy
 
 Do we already got the License , the sad things is **NO**
 
-![alt text](./image4.png)
+![alt text](./part1_img/image4.png)
 The hash function is not directly responsible for generating the `activation code` but is used to verify the integrity of the license content. By setting a breakpoint at this function and running the debugger (F5), we inspect the **Locals** view in dnSpy to examine the license structure.
 we found this function **public static LicenseStatus q(string A_0, string A_1)**
 Simply used to get the licenseStatus
@@ -407,14 +407,14 @@ What it does:
 - features enabled
 
 Below is the flow illustrated
-![alt text](./checkflow.svg)
+![alt text](./part1_img/checkflow.svg)
 
 ### Breakpoint To the Params
 
 1. Set a breakpoint at the start of `LicenseStatus q(string A_0, string A_1)`.
-   ![alt text](./image5.png)
+   ![alt text](./part1_img/image5.png)
    Press _F5_ , Now at **Locals** windows in dnspy  
-   ![alt text](./locals.png)
+   ![alt text](./part1_img/locals.png)
 2. Inspect the **Locals** window in dnSpy to analyze the parameters:
    - `A_0`: An XML string containing the license content.
    - `A_1`: The product name.
@@ -456,17 +456,17 @@ The next critical step is understanding how the signature is generated to create
 
 The `Signature` field ensures the license XML has not been tampered with. During analysis, we discover a static constructor containing a Base64-encoded public key used for signature verification.
 
-![alt text](./image6.png)
+![alt text](./part1_img/image6.png)
 During analysis, we identify a static constructor containing an unusual Base64 string, which appears to be a public key used for signature verification.
 
-![alt text](./image7.png)
+![alt text](./part1_img/image7.png)
 The verification process follows this flow:
 
 1. Remove the signature element from the XML to obtain the content buffer.
 2. Initialize a signer with the public key (Base64 string).
 3. Perform a verification check to ensure the content has not been altered.
 
-![alt text](./image8.png)
+![alt text](./part1_img/image8.png)
 If the verification fails, the application throws an exception:
 
 ```csharp
@@ -513,7 +513,7 @@ The license activation process can be summarized as follows:
 3. The license XML, containing the `MachineId`, product features, and other attributes, is verified using a Base64-encoded signature.
 4. A public key (embedded in the application) is used to validate the signature, ensuring the license has not been modified.
 
-![alt text](./sum.png)
+![alt text](./part1_img/sum.png)
 
 ## Next Steps
 
