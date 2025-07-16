@@ -15,12 +15,12 @@ This content is for educational purposes only. Sensitive information has been an
 
 # Series
 
-- [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/) Understand the license activation flow
-- [Part 2](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part2/) We write our own keygen
+- [Part 1](./part1.md) Understand the license activation flow
+- [Part 2](./part2.md) We write our own keygen
 
 # Background
 
-Building on the foundation laid in [Part.1](https//mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/) where we unraveled the intricacies of the activation flow, Part 2 dives into the exciting challenge of crafting a keygen to patch the application. Get ready to explore the art of reverse engineering as we unlock new techniques to bypass restrictions and gain deeper control over the software's core mechanics.
+Building on the foundation laid in [Part.1](./part1.md) where we unraveled the intricacies of the activation flow, Part 2 dives into the exciting challenge of crafting a keygen to patch the application. Get ready to explore the art of reverse engineering as we unlock new techniques to bypass restrictions and gain deeper control over the software's core mechanics.
 There are two ideas how we arhieve this
 
 - **IL patch** the public key string
@@ -43,17 +43,17 @@ It is because if we are using **inline hook** we have to patch each **product** 
 if( license.IsNotActivated)
 ```
 
-wait !!! what **products** ? In [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/) we do have the diagram
+wait !!! what **products** ? In [Part 1](./part1.md) we do have the diagram
 ![Activation Flow Reversed](./part1_img/flow.png)
 so patching **License.Activation.dll** is a better solution since it Fuck them all at once.
 
 ## Before We Dive In
 
-Let’s rewind to [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/), where we mapped out the activation flow like a treasure hunt. Now, we’re flipping the script to create our keygen by working backward through the process.
+Let’s rewind to [Part 1](./part1.md), where we mapped out the activation flow like a treasure hunt. Now, we’re flipping the script to create our keygen by working backward through the process.
 
 ### The Reverse Heist: Understanding the Flow
 
-Picture this: the app creates a license XML file, unsigned, like a blank canvas. Then, it generates an `AsymmetricCipherKeyPair`, spitting out a public and private key. The private key signs the XML, and that signature gets tucked into the XML as an element. The updated XML is stashed in the system registry, and finally, the `License.Activation.dll` gets patched with the public key to seal the deal. Our mission? Reverse-engineer this flow to craft a keygen that generates valid keys and patches the DLL like a pro.
+Picture this: the app creates a license XML file, unsigned, like a blank canvas. Then, it generates an `AsymmetricCipherKeyPair`, spitting out a public and private key. The private key signs the XML, and that signature gets tucked into the XML as an element. The updated XML is stashed in the system registry, and finally, the `License.Activation.dll` gets patched with the public key to seal the deal. Our mission? Reverse-engineer this flow to craft a keygen that generates valid keys and patches the DLL.
 
 ![Activation Flow Reversed](./part2_img/flow.svg)
 
@@ -63,12 +63,12 @@ We’re going all-in on **IL Patching** for this adventure. Our goal: hunt down 
 
 ### NuGet
 
-We’ll arm ourselves with these NuGet packages:
+NuGet packages:
 
 - [dnlib](https://www.nuget.org/packages/dnlib): Our go-to for editing IL code like a code surgeon.
-- [BouncyCastle.Cryptography](https://www.nuget.org/packages/BouncyCastle.Cryptography): The key to generating unbreakable signatures.
+- [BouncyCastle.Cryptography](https://www.nuget.org/packages/BouncyCastle.Cryptography): The key to generating public key ,private key , Sigurature.
 
-Install them like a boss:
+Install them:
 
 ```cmd
 dotnet add package dnlib --version 4.5.0
@@ -82,12 +82,12 @@ var module = ModuleDefMD.Load(await File.ReadAllBytesAsync(inputDllPath));
 ```
 
 :::Tip
-Personally I suggest read the buffer then load it , instead of directly passing the path to .Load()
+Personally I suggest read the buffer then load it , instead of directly passing the path to **.Load()**
 :::
 
 ## Cracking the Code: Finding And Patching the Public Key
 
-Remember that **public key** we sniffed out in [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/)? Open **dnSpy**, head to **Search -> Select Number/String**, and paste that key. Boom—search results light up like a neon sign in a cyberpunk alley.
+Remember that **public key** we sniffed out in [Part 1](./part1.md)? Open **dnSpy**, head to **Search -> Select Number/String**, and paste that key. Boom—search results light up like a neon sign in a cyberpunk alley.
 
 By looking at IL instead of C# code can help you easier to motify the code base.
 ![Search in dnSpy](./part2_img/search.png)
@@ -112,7 +112,7 @@ public static partial class n8
 /* 0x00005A28 72FC250070   */ IL_009C: ldstr     "original key"
 ```
 
-We’re hunting for the `ldstr` opcode to swap in our new public key using **dnlib**:
+We’re hunting for the `ldstr` opcode to swap in our new public key using **dnlib** by replacing operand value:
 
 ```cs
 var module = ModuleDefMD.Load("License.Activation.dll");
@@ -170,7 +170,7 @@ We’ll replace the `ldstr` operand just like before:
 ## The KeyPair
 
 By using **Org.BouncyCastle.Crypto**
-As [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/) we have mention about how to find the algorithm.
+As [Part 1](./part1.md) we have mention about how to find the algorithm.
 
 ```cs
 
@@ -323,7 +323,7 @@ If you are using **Visual Studio** , just **Edit -> Paste XML**
 
 ## Generating The Machine Hash
 
-As in [Part 1](https://mvsharp.github.io/posts/step_by_step_reverse_d_engine/part1/) we found out the activiation do use machien uuid , system uuid and disk serialnumber as hash to check the fields are motified or not.
+As in [Part 1](./part1.md) we found out the activiation do use machien uuid , system uuid and disk serialnumber as hash to check the fields are motified or not.
 
 ```cs
 
