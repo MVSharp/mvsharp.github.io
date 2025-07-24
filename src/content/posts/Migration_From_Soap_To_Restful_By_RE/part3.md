@@ -25,6 +25,13 @@ To effectively extract DbContext and stored procedure information, we employ two
 ![flow](./part3_img/flow.svg)
 The process begins by loading the system’s DLLs using dnlib to access the codebase’s structure. The first workflow scans all DbContext classes, identifies their methods, and determines which methods are invoked by other parts of the system, creating a usage map. Simultaneously, the second workflow examines BC classes, extracts their methods, and identifies stored procedure (USP) calls, mapping their dependencies. These two streams converge to produce a comprehensive usage map, linking DbContext interactions with stored procedure calls, which is critical for understanding the system’s data access patterns.
 
+## Mongo Schema Design
+
+schema for BC extraction
+![schema for BC extraction](./part3_img/schema1.png)
+schema for dbcontext sp extraction
+![schema for dbcontext sp extraction](./part3_img/schema2.png)
+
 ## Preparion
 
 Using dnlib, we load the system’s DLLs to access the metadata of classes, methods, and their relationships. This step sets the foundation for analyzing the codebase programmatically, enabling us to extract DbContext and stored procedure information efficiently.
@@ -49,10 +56,25 @@ Using dnlib, we load the system’s DLLs to access the metadata of classes, meth
 # BC Extract DbContext Function
 
 To understand how DbContext is utilized within Business Component (BC) classes, we scan all functions within these classes. This involves iterating through each BC class, identifying methods that interact with DbContext instances, and cataloging their dependencies. This process is essential for mapping data access logic embedded in the business layer.
+Lets illustrates a simple BC classes:
+
+```cs
+class SomeBC : SomeBCBase
+{
+    void DoCheckingAndUpdateTransaction(some params)
+    {
+
+        // do some business checking
+        // do some business logic
+        using var context = new SomeDbContext();
+        context.usp_UpdateTransaction(some params);
+    }
+}
+```
 
 ## Extract Calls And CallVirt from BC Methods
 
-!(example)[./part3_img/ocr7.png]
+![example](./part3_img/ocr7.png)
 In this step, we focus on extracting Calls and CallVirt instructions from BC methods to identify interactions with DbContext and stored procedures. By analyzing the Intermediate Language (IL) code, we pinpoint method calls that invoke DbContext operations or stored procedure executions. This granular analysis helps us understand the system’s data flow and dependencies, enabling precise extraction of critical components.
 
 ```cs
@@ -121,7 +143,18 @@ In this step, we focus on extracting Calls and CallVirt instructions from BC met
 
 # Extract DbContext Classes
 
+Lets illustrate sample code using that using **Ado.net**
 Extracting DbContext classes involves identifying all classes that inherit from DbContext within the codebase. We use dnlib to scan the DLLs, detect these classes, and catalog their properties and methods. This step is crucial for understanding the data access layer and preparing for migration to a modern architecture.
+
+```cs
+class SomeTransactionsContext : DbContext
+{
+//skip .ctor , get set
+ObjectResult  usp_UpdateSomeData(Some params){
+      //foo bar
+   }
+}
+```
 
 ## Identity Dbcontext classes
 
