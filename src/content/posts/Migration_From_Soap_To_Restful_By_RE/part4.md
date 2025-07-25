@@ -100,6 +100,100 @@ public abstract class RequestBase
 
 Additionally, we must scan properties within each class (e.g., `IsEnrolling` and `PromotionId`) and recursively process their types if they are custom classes.
 
+## Collect Usings
+
+```cs
+
+static void CollectUsingsFromGeneric(TypeReference type , HashSet<string> usings)
+{
+    if ( string.IsNullOrEmpty(type.Namespace) ) return;
+
+    usings.Add(type.Namespace);
+    if ( type.IsGenericInstance )
+    {
+        var gt = type as GenericInstanceType;
+        foreach (var param in gt.GenericArguments)
+        {
+            if ( string.IsNullOrEmpty(param.Namespace) ) continue;
+
+            usings.Add(param.Namespace);
+            CollectUsingsFromGeneric(param , usings);
+        }
+    }
+}
+
+static void CollectUsings(TypeDefinition type , HashSet<string> usings)
+{
+    // Attributes
+    if ( type.HasCustomAttributes )
+    {
+        foreach (var attr in type.CustomAttributes)
+        {
+            if ( !string.IsNullOrEmpty(attr.AttributeType.Namespace) )
+            {
+                usings.Add(attr.AttributeType.Namespace);
+            }
+        }
+    }
+
+    // Base class
+    if ( type.BaseType          != null && !string.IsNullOrEmpty(type.BaseType.Namespace) &&
+         type.BaseType.FullName != "System.Object" )
+    {
+        //     usings.Add(type.BaseType.Namespace);
+        CollectUsingsFromGeneric(type.BaseType , usings);
+        //usings.Add(type.BaseType.Namespace);
+        //if (type.BaseType.HasGenericParameters)
+        //{
+        //    foreach (var param in type.BaseType.GenericParameters)
+        //    {
+        //        usings.Add(param.Namespace);
+        //    }
+        //}
+    }
+
+    // Fields
+    foreach (var field in type.Fields.Where(f => !f.IsSpecialName && !f.IsRuntimeSpecialName))
+    {
+        if ( !field.IsPublic ) continue;
+
+        if ( !string.IsNullOrEmpty(field.FieldType.Namespace) )
+        {
+            usings.Add(field.FieldType.Namespace);
+        }
+
+        foreach (var attr in field.CustomAttributes)
+        {
+            if ( !string.IsNullOrEmpty(attr.AttributeType.Namespace) )
+            {
+                usings.Add(attr.AttributeType.Namespace);
+            }
+        }
+    }
+
+    // Properties
+    foreach (var property in type.Properties)
+    {
+        if ( !string.IsNullOrEmpty(property.PropertyType.Namespace) )
+        {
+            usings.Add(property.PropertyType.Namespace);
+        }
+
+        foreach (var attr in property.CustomAttributes)
+        {
+            if ( !string.IsNullOrEmpty(attr.AttributeType.Namespace) )
+            {
+                usings.Add(attr.AttributeType.Namespace);
+            }
+        }
+    }
+
+    usings.Add("");
+    usings = usings.Where(x => !string.IsNullOrEmpty(x) && !x.Contains("System.Windows")).ToHashSet();
+}
+
+```
+
 ## Handle Generic Properties and Classes
 
 To handle generics and nested types, we define a recursive scanning algorithm. The process can be visualized with the following Mermaid diagram:
@@ -150,6 +244,19 @@ public class DomainModelExtractor
                 ScanType(module, propertyType);
             }
         }
+
+            foreach (var t in type.NestedTypes)
+            {
+                if ( t == null ) continue;
+                //scan
+            }
+
+            foreach (var f in type.Fields)
+            {
+                if ( f == null ) continue;
+                if ( !f.IsPublic ) continue;
+                //scan
+            }
     }
 }
 
