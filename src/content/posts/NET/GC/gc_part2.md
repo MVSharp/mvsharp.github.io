@@ -2,7 +2,7 @@
 title: Reading CoreClr Code- 18 Reasons Trigger GC in DotNET (Part 1)
 published: 2025-07-29
 description: "Some Info"
-image: "./gc_types/types.svg"
+image: "./gc_types/triggers.svg"
 tags: [DOTNET, GC, CSharp, CoreClr]
 category: "CoreClr"
 draft: false
@@ -11,7 +11,7 @@ lang: "en"
 
 # The 18 triggers in GC By reading DOTNET Source Code
 
-![types](./gc_types/types.svg)
+![types](./gc_types/trigger.svg)
 By reading DOTNET source code , in file [runtime/src/coreclr/gc
 /gc.cpp](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gc.cpp)
 
