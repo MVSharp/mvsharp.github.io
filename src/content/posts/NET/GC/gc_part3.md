@@ -1,5 +1,5 @@
 ---
-title: "[Reading Source Code]Four Types Of GC In DOTNET"
+title: "Reading Source Code - Four Types Of GC In DOTNET"
 published: 2025-07-29
 description: "Understanding Four  Types of GC how it works by reading the source code in DOTNET"
 image: ""
