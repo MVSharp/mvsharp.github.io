@@ -9,6 +9,10 @@ draft: false
 lang: "en"
 ---
 
+:::Tip
+This article main focus on WKS background GC as It is default for DOTNET
+:::
+
 # Some Resouces
 
 - [.NET CLR GC Implementation](https://raw.githubusercontent.com/dotnet/runtime/main/src/coreclr/gc/gc.cpp)
