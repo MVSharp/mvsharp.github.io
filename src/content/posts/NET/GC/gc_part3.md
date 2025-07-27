@@ -117,7 +117,7 @@ plan_phase()
 so as we can we plan_phase must be execute , this is different from concurrent mode WKS GC
 :::
 
-# WorkStation Background(Concurrent)[Default Case for WKS GC]
+# WorkStation Background(Background Threads Unlock Managed Threads)[Default Case for WKS GC]
 
 ![workstation background](./gc_flow/workstation_background.svg)
 
