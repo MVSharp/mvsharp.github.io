@@ -1,6 +1,6 @@
 ---
 title: Background  - Migrate Old Large C# System By Using Reverse Engineering Techie (Part 1)
-published: 2025-07-22
+published: 2025-07-20
 description: Basic Background introduction for large complex system before we started to migirating the soap to restful , generate .NET code and building view system.
 image: "./banner.png"
 tags: [CSharp, IL, Reverse Engineering, dnSpy, Kafka, MongoDB, Neo4j]
