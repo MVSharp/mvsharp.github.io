@@ -1,5 +1,5 @@
 ---
-title: What Is GC (Part 1)
+title: "What Is GC (Part 1)"
 published: 2025-07-28
 description: "Some Info"
 image: ""

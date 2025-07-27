@@ -1,19 +1,19 @@
 ---
-title: [Reading Source Code]GC Generation To Condemn In GC In DOTNET
+title: "Reading Source Code - GC Generation To Condemn In GC In DOTNET"
 published: 2025-07-29
-description: "Understanding Four  Types of GC how it works by reading the source code in DOTNET"
+description: "Understanding Four Types of GC how it works by reading the source code in DOTNET"
 image: "./gc_condemn/high.svg"
-tags: [DOTNET, GC, CSharp,CoreClr]
+tags: [DOTNET, GC, CSharp, CoreClr]
 category: "CoreClr"
 draft: false
 lang: "en"
 ---
 
+# Introduction
+
 :::Tip
 this article is written in 2025 before .NET10 release , so hopefully SERVO is coming since it already exist in DOTNET CoreClr Source code
 :::
-
-# Introduction
 
 The .NET Core runtime, specifically its CoreCLR implementation, includes a sophisticated garbage collector (GC) that manages memory for applications across cloud, mobile, desktop, and IoT platforms. A key component of this GC is the `generation_to_condemn` function, which determines which generation of the managed heap to collect during a GC cycle. This article explores the role of `generation_to_condemn`, its integration with the experimental SERVO GC tuning feature, and how it enhances memory management in .NET Core applications.
 
@@ -95,6 +95,6 @@ The `generation_to_condemn` function is a pivotal decision point in the GC cycle
 
 At a detailed level, the function follows a decision tree, checking budgets and thresholds for each generation and incorporating SERVO adjustments when enabled. The diagram below details this logic:
 
-## Conclusion
+# Conclusion
 
 The `generation_to_condemn` function is a cornerstone of the .NET Core garbage collector, enabling efficient memory management through generational collection. The introduction of SERVO GC tuning enhances its capabilities by adding dynamic, performance-driven decision-making. While still experimental, SERVO GC promises to improve application performance by adapting to runtime conditions, making it a significant advancement for .NET Core developers. As the feature matures, it may become a standard part of the .NET ecosystem, offering greater control over memory management in diverse application scenarios.
