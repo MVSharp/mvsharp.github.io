@@ -23,6 +23,7 @@ In [Part 1](./part1.md), we dipped our toes into the shallow end of this series 
 - [Part 2](./part2.md): Aggerating AF and BC Relationships, Dive into building our IL Parser for deeper system insights.
 - [Part 3](./part3.md): Aggerating BC And Store Procedures Relations
 - [Part 4](./part4.md): Dumping soap endpoints and domain models
+- [Part 5](./part5.md): Generating C# code for RestFul Api.
   Welcome back to our technical blog series on migrating a large, legacy C# system using reverse engineering techniques! In this fourth installment, we dive into the intricacies of handling SOAP services and extracting domain models, a critical step in understanding and modernizing our system. Our focus today is on navigating the complexities of SOAP-based interfaces and extracting the domain models embedded within them using **dnlib**.
 
 ## Introduction to SOAP and WSDL Challenges

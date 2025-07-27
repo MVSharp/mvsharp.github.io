@@ -9,11 +9,21 @@ draft: false
 lang: en
 ---
 
+:::Caution
+Disclaimer: This blog series is intended solely for educational purposes to share ideas and concepts related to my company system. The content provided, including any proof-of-concept (POC) code, is meant to illustrate ideas and foster learning. No full solutions or sensitive company details are included due to **privacy** and **security** considerations. The POC code shared is not intended for production use and should be treated as illustrative examples only. Readers are encouraged to adapt and expand upon these ideas responsibly, respecting all applicable privacy and security guidelines.
+:::
+
+:::Tip
+In [Part 1](./part1.md), we dipped our toes into the shallow end of this series to keep things engaging and avoid overwhelming you with too much detail at once.
+:::
+
 # Series Overview
 
 - [Part 1](./part1.md): Lay the foundation with essential knowledge for the journey ahead.
 - [Part 2](./part2.md): Aggerating AF and BC Relationships, Dive into building our IL Parser for deeper system insights.
 - [Part 3](./part3.md): Aggerating BC And Store Procedures Relations
+- [Part 4](./part4.md): Dumping soap endpoints and domain models
+- [Part 5](./part5.md): Generating C# code for RestFul Api.
 
 # Before We Start
 

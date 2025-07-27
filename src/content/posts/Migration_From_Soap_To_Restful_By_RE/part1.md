@@ -22,6 +22,8 @@ In [Part 1](./part1.md), we dipped our toes into the shallow end of this series 
 - [Part 1](./part1.md): Lay the foundation with essential knowledge for the journey ahead.
 - [Part 2](./part2.md): Aggerating AF and BC Relationships, Dive into building our IL Parser for deeper system insights.
 - [Part 3](./part3.md): Aggerating BC And Store Procedures Relations
+- [Part 4](./part4.md): Dumping soap endpoints and domain models
+- [Part 5](./part5.md): Generating C# code for RestFul Api.
 
 # Prerequisites
 
