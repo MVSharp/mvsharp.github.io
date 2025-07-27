@@ -1,5 +1,5 @@
 ---
-title: Extracting DbContext and Stored Procedures- Migrate Old Large C# System By Using Reverse Engineering Techie (Part 3)
+title: Extracting DbContext and Stored Procedures- Migrate Old Large C# System By Using Reverse Engineering Techniques (Part 3)
 published: 2025-07-24
 description: How do we know what api calls what store procedures? this section we provide ideas to arhieve this automation using dnlib.
 image: "./banner.png"

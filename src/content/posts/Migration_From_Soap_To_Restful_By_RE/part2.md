@@ -1,5 +1,5 @@
 ---
-title: Related Types Extraction  - Migrate Old Large C# System By Using Reverse Engineering Techie (Part 2)
+title: Related Types Extraction  - Migrate Old Large C# System By Using Reverse Engineering Techniques (Part 2)
 published: 2025-07-21
 description: AF is the starting point of soap , this section provide ways to mapping AF and BC relationships using dnlib.
 image: "./banner.png"

@@ -1,5 +1,5 @@
 ---
-title: Soap And Domain Model Extraction  - Migrate Old Large C# System By Using Reverse Engineering Techie (Part 4)
+title: Soap And Domain Model Extraction  - Migrate Old Large C# System By Using Reverse Engineering Techniques (Part 4)
 published: 2025-07-25
 description: Section 4 is aimed to extract the soap functions and domain before our code generation for restful this section we provide ideas to arhieve this automation using dnlib.
 image: "./banner.png"
