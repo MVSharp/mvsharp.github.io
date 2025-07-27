@@ -52,10 +52,12 @@ on the user thread that triggered the GC. The code flow is:
          // compact or not
          if (compact)
          {
+            //compact gc
              relocate_phase();
              compact_phase();
          }
          else
+             //mark and sweep
              make_free_lists();
      }
 
@@ -107,12 +109,26 @@ plan_phase()
 
 ````
 
+:::Tip
+so as we can we plan_phase must be execute , this is different from concurrent mode WKS GC
+:::
+
 # WorkStation Background(Concurrent)[Default Case for WKS GC]
 
 ![workstation background](./gc_flow/workstation_background.svg)
 
 By reading DOTNET source code , in file [runtime/src/coreclr/gc
 /gc.cpp](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gc.cpp)
+
+As we can see , there is a **optimization** compare to WKSGC for **gc1() **
+where WKS originally blocked thread in single mode
+but now **background_mark_phase();** & **background_sweep();** is a game changer
+It doesn't block the thread
+which means , **IT AVOID STW**
+It doesn't the fuck STOP THE WORLD
+the **managed thread** doesn't get blocked .
+
+![workstation background2](./gc_flow/sd_workstation_background.svg)
 
 ```c
 
@@ -148,6 +164,7 @@ Given WKS GC with concurrent GC on (default case), the code flow for a backgroun
          {
              // wait on an event
              // wake up
+
              gc1();
          }
      }
