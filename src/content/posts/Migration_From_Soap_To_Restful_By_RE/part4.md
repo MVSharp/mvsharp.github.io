@@ -30,6 +30,7 @@ In [Part 1](./part1.md), we dipped our toes into the shallow end of this series 
 
 ![wsdl broken](https://i.sstatic.net/aKgaK.png)
 SOAP (Simple Object Access Protocol) is a protocol for exchanging structured information in web services, typically defined by a WSDL (Web Services Description Language) file. In an ideal world, the WSDL provides a clear contract for service operations, data types, and endpoints. However, in our legacy project, the WSDL is **broken—plagued** by **duplicate namespaces**, conflicting classes, and dependency hell. Fixing the WSDL would be a Herculean task, so we opt for reverse engineering the domain models directly from the codebase using **dnlib**, bypassing the WSDL entirely.
+![codeflow](./part4_img/codeflow.svg)
 
 ## SOAP Interface Extraction
 
@@ -69,6 +70,7 @@ To fully understand the domain, we need to extract the models referenced in meth
 
 ### Model Layers
 
+![model Layers](./part4_img/model.svg)
 Consider the following example class:
 
 ```cs
