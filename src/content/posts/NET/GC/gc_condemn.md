@@ -9,11 +9,19 @@ draft: false
 lang: "en"
 ---
 
+:::Tip
+this article is written in 2025 before .NET10 release , so hopefully SERVO is coming since it already exist in DOTNET CoreClr Source code
+:::
+
 # Introduction
 
 The .NET Core runtime, specifically its CoreCLR implementation, includes a sophisticated garbage collector (GC) that manages memory for applications across cloud, mobile, desktop, and IoT platforms. A key component of this GC is the `generation_to_condemn` function, which determines which generation of the managed heap to collect during a GC cycle. This article explores the role of `generation_to_condemn`, its integration with the experimental SERVO GC tuning feature, and how it enhances memory management in .NET Core applications.
 
 ## Source Code generation_to_condemn
+
+In
+
+- .NET CoreCLR Garbage Collector, [runtime/src/coreclr/gc/gc.cpp](https://github.com/dotnet/coreclr/blob/master/src/gc/gc.cpp)
 
 ```cs
 /*
@@ -32,12 +40,12 @@ int gc_heap::generation_to_condemn (int n_initial,
                                     BOOL check_only_p)
 ```
 
-**References**:
+## References
 
-- .NET CoreCLR Garbage Collector, `runtime/src/coreclr/gc/gc.cpp`[](https://github.com/dotnet/coreclr/blob/master/src/gc/gc.cpp)
-- GC Configuration, `runtime/src/coreclr/gc/gcconfig.h`[](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gcconfig.h)\*References\*\*:
-- .NET CoreCLR Garbage Collector, `runtime/src/coreclr/gc/gc.cpp`[](https://github.com/dotnet/coreclr/blob/master/src/gc/gc.cpp)
-- GC Configuration, `runtime/src/coreclr/gc/gcconfig.h`[](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gcconfig.h)
+- .NET CoreCLR Garbage Collector, [runtime/src/coreclr/gc/gc.cpp](https://github.com/dotnet/coreclr/blob/master/src/gc/gc.cpp)
+- GC Configuration,[runtime/src/coreclr/gc/gcconfig.h](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gcconfig.h)
+- .NET CoreCLR Garbage Collector,[runtime/src/coreclr/gc/gc.cpp](https://github.com/dotnet/coreclr/blob/master/src/gc/gc.cpp)
+- GC Configuration,[runtime/src/coreclr/gc/gcconfig.h](https://github.com/dotnet/runtime/blob/main/src/coreclr/gc/gcconfig.h)
 
 ## The Role of `generation_to_condemn`
 
@@ -70,9 +78,6 @@ This process ensures that the GC collects only the necessary objects, minimizing
 
 # SERVO GC Tuning
 
-:::Tip
-this article is written in 2025 before .NET10 release , so hopefully SERVO is coming since it already exist in DOTNET CoreClr Source code
-:::
 SERVO GC is an experimental feature in the .NET Core GC that introduces dynamic tuning to optimize collection decisions. Unlike the standard GC, which relies on static heuristics, SERVO GC uses feedback loops to monitor runtime metrics, such as:
 
 - **Allocation Rates**: How frequently objects are allocated.
