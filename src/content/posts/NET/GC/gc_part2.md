@@ -1,5 +1,5 @@
 ---
-title: Reading Source Code - 18 Reasons Trigger GC in DotNET (Part 1)
+title: Reading CoreClr Code- 18 Reasons Trigger GC in DotNET (Part 1)
 published: 2025-07-29
 description: "Some Info"
 image: ""
