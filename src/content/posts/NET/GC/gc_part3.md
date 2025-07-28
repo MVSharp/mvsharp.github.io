@@ -64,7 +64,7 @@ on the user thread that triggered the GC. The code flow is:
              //mark and sweep
              make_free_lists();
      }
-
+```
 # Server GC
 ![server gc](./gc_flow/server.svg)
 ```c
