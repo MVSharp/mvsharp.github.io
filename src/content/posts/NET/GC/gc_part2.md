@@ -9,6 +9,8 @@ draft: false
 lang: "en"
 ---
 
+::github{repo="dotnet/runtime"}
+
 # The 18 triggers in GC By reading DOTNET Source Code
 
 ![types](./gc_types/trigger.svg)

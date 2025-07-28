@@ -9,6 +9,7 @@ draft: false
 lang: "en"
 ---
 
+::github{repo="reactOS/reactOS"}
 Based on the ReactOS source code (available in the GitHub repository), RtlDispatchException is typically found in files like ntdll/rtl/except.c or architecture-specific files (e.g., ntdll/rtl/i386/except.c for x86, ntdll/rtl/arm/except.c for ARM).
 
 # What is RtlDispatchException
