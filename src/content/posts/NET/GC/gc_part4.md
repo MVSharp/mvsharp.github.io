@@ -50,6 +50,36 @@ In the CoreCLR GC, `mark_object_simple` is part of the server-mode GC (`SERVER_S
 
 # mark_object_simple [Recursive Scan]
 
+## Function Header
+
+```cs
+//this method assumes that *po is in the [low. high[ range
+void
+gc_heap::mark_object_simple (uint8_t** po THREAD_NUMBER_DCL)
+{
+    int condemned_gen =
+#ifdef USE_REGIONS
+        settings.condemned_generation;
+#else
+        -1;
+#endif //USE_REGIONS
+
+    uint8_t* o = *po;
+#ifndef MULTIPLE_HEAPS
+    const int thread = 0;
+#endif //MULTIPLE_HEAPS
+    {
+#ifdef SNOOP_STATS
+        snoop_stat.objects_checked_count++;
+#endif //SNOOP_STATS
+
+        o = mark_queue.queue_mark (o);
+        if (o != nullptr)
+        {
+            m_boundary (o);
+            size_t s = size (o);
+```
+
 Uses a **mark stack** to manage objects, enabling iterative processing of object fields.
 Recursively marks fields if they exist, pushing them onto the stack for further processing.
 Handles **stack overflow** explicitly, suggesting it’s designed for complex object graphs where stack limits might be hit.
@@ -60,6 +90,20 @@ Explicitly checks for mark stack fullness and handles overflow, indicating it’
 ![mark_object_simple](./mark_object_simple/mark_object_simple.svg)
 
 # mark_object_simple1 [DFS Scan]
+
+## function header
+
+```cs
+
+void gc_heap::mark_object_simple1 (uint8_t* oo, uint8_t* start THREAD_NUMBER_DCL)
+{
+    SERVER_SC_MARK_VOLATILE(uint8_t*)* mark_stack_tos = (SERVER_SC_MARK_VOLATILE(uint8_t*)*)mark_stack_array;
+    SERVER_SC_MARK_VOLATILE(uint8_t*)* mark_stack_limit = (SERVER_SC_MARK_VOLATILE(uint8_t*)*)&mark_stack_array[mark_stack_array_length];
+    SERVER_SC_MARK_VOLATILE(uint8_t*)* mark_stack_base = mark_stack_tos;
+#ifdef SORT_MARK_STACK
+    SERVER_SC_MARK_VOLATILE(uint8_t*)* sorted_tos = mark_stack_base;
+#endif //SORT_MARK_STACK
+```
 
 Processes fields directly using **go_through_object_cl** for small objects and go*through_object for partial/large objects.
 Handles partial objects by tracking a start pointer and resuming marking from a specific reference (**ref_to_continue**).

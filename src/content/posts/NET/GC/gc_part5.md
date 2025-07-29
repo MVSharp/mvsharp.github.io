@@ -1,7 +1,7 @@
 ---
 title: Reading CoreClr Code- GC The Mark Queue
 published: 2025-08-01
-description: "Some small talks about GCHeap::mark_queue
+description: "Some small talks about GCHeap::mark_queue "
 image: "./mark_queue/full.svg"
 tags: [DOTNET, GC, CSharp, CoreClr]
 category: "CoreClr"
