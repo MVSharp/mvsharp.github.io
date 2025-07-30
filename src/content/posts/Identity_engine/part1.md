@@ -3,8 +3,8 @@ title: "Background  - How To Make A Identification System With OpenCV   (Part 1)
 published: 2025-08-02
 description: "Learn how to build an identification system using OpenCV, starting with ID card and passport recognition basics"
 image: "./UVID.webp"
-tags: [CSharp]
-category: CSharp
+tags: [CSharp, OpenCV]
+category: OpenCV
 draft: false
 lang: en
 ---
