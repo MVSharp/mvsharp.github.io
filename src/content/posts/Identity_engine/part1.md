@@ -9,6 +9,8 @@ draft: false
 lang: en
 ---
 
+::github{repo="shimat/opencvsharp"}
+
 # Series
 
 - [Part 1](./part1.md) : Just simply talk about ideas what we needed to build a identification system
@@ -88,6 +90,84 @@ Reading Image Text , we may choose **PaddleOCR** or **Tessert** or some other , 
   - **Template Matching**: Compare zones with known templates using normalized cross-correlation.
   - **Color Space Hashing**: Hash images in YCrCb color space for comparison.
   - **Feature Detection**: Use algorithms like SIFT or ORB to identify key points.
+
+#### Feature Extraction
+
+Feature extraction involves detecting and describing key points (features) in an image for tasks like object recognition, image matching, or 3D reconstruction. OpenCV provides several algorithms for feature detection and description:
+
+- **SIFT (Scale-Invariant Feature Transform)**:
+
+  - **Description**: Detects and describes keypoints that are invariant to scale, rotation, and partially invariant to illumination changes. It computes a 128-dimensional descriptor for each keypoint.
+  - **Usage**: Suitable for robust feature matching in varied conditions.
+  - **OpenCV Function**: `cv2.SIFT_create()` (available in OpenCV's `xfeatures2d` module in older versions or main module in newer versions).
+
+- **SURF (Speeded-Up Robust Features)**:
+
+  - **Description**: A faster alternative to SIFT, using integral images and Haar wavelet responses for keypoint detection and description. It provides a 64- or 128-dimensional descriptor.
+  - **Usage**: Useful for real-time applications due to speed.
+  - **OpenCV Function**: `cv2.xfeatures2d.SURF_create()` (available in `xfeatures2d` module, requires OpenCV contrib).
+
+- **ORB (Oriented FAST and Rotated BRIEF)**:
+
+  - **Description**: Combines FAST keypoint detector and BRIEF descriptor, adding orientation information. It is computationally efficient and provides binary descriptors.
+  - **Usage**: Ideal for resource-constrained environments like mobile devices.
+  - **OpenCV Function**: `cv2.ORB_create()`.
+
+- **BRIEF (Binary Robust Independent Elementary Features)**:
+
+  - **Description**: A descriptor-only method that creates binary strings by comparing pixel intensities in a patch around a keypoint. Typically paired with a detector like FAST.
+  - **Usage**: Fast descriptor computation for matching.
+  - **OpenCV Function**: `cv2.xfeatures2d.BriefDescriptorExtractor_create()` (requires `xfeatures2d`).
+
+- **FAST (Features from Accelerated Segment Test)**:
+
+  - **Description**: A keypoint detector that identifies corners by comparing a pixel with its neighbors in a circular pattern. It does not include a descriptor.
+  - **Usage**: High-speed detection, often paired with BRIEF or ORB.
+  - **OpenCV Function**: `cv2.FastFeatureDetector_create()`.
+
+- **Harris Corner Detector**:
+
+  - **Description**: Detects corners based on intensity changes in a local window, using the Harris corner response function.
+  - **Usage**: Good for detecting stable corners but lacks scale invariance.
+  - **OpenCV Function**: `cv2.cornerHarris()`.
+
+- **BRISK (Binary Robust Invariant Scalable Keypoints)**:
+  - **Description**: Combines a scale-space pyramid for keypoint detection with a binary descriptor, similar to ORB but with different scale handling.
+  - **Usage**: Robust for scale and rotation changes, efficient for matching.
+  - **OpenCV Function**: `cv2.BRISK_create()`.
+
+#### Template Matching
+
+Template matching involves sliding a template image over a source image to find regions of similarity. OpenCV provides several methods for template matching, all implemented in the `cv2.matchTemplate()` function with different similarity measures:
+
+- **Squared Difference (TM_SQDIFF)**:
+
+  - **Description**: Computes the sum of squared differences between the template and the image patch. Lower values indicate better matches.
+  - **Usage**: Sensitive to intensity differences, good for exact matches.
+
+- **Normalized Squared Difference (TM_SQDIFF_NORMED)**:
+
+  - **Description**: Normalizes the squared difference to account for intensity variations, making it more robust.
+  - **Usage**: Better for varying lighting conditions.
+
+- **Correlation (TM_CCORR)**:
+
+  - **Description**: Computes the correlation between the template and image patch. Higher values indicate better matches.
+  - **Usage**: Sensitive to intensity scaling, less robust to lighting changes.
+
+- **Normalized Correlation (TM_CCORR_NORMED)**:
+
+  - **Description**: Normalizes the correlation to reduce sensitivity to intensity changes.
+  - **Usage**: More robust for lighting variations.
+
+- **Correlation Coefficient (TM_CCOEFF)**:
+
+  - **Description**: Computes the correlation coefficient, subtracting the mean of the template and image patch.
+  - **Usage**: Robust to linear intensity changes.
+
+- **Normalized Correlation Coefficient (TM_CCOEFF_NORMED)**:
+  - **Description**: Normalizes the correlation coefficient for robustness to lighting and contrast changes.
+  - **Usage**: Most robust for varying conditions, widely used.
 
 ## Possible ID Card Zones
 
@@ -179,3 +259,7 @@ OCR extracts text from zones (e.g., MRZ) and validates:
 ## Conclusion
 
 This article covers the foundational design of an identification engine, focusing on scanner integration, image processing with OpenCV, and verification steps. Part 2 will dive deeper into implementing the image processing pipeline and handling edge cases.
+
+# What's Next
+
+We are going to design the db schema for our system in [Part 2](./part2.md) : The database schema design.

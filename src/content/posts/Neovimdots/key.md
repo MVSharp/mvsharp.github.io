@@ -9,6 +9,7 @@ draft: false
 lang: "en"
 ---
 
+::github{repo="ayamir/nvimdots"}
 :::Tip
 Reach out Neovimdots from [neovimdots](https://github.com/ayamir/nvimdots) by [ayamir](https://github.com/ayamir)
 :::
