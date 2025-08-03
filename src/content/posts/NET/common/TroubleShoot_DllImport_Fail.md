@@ -1,6 +1,6 @@
 ---
 title: "Experiences On How Dll Import Failed"
-published: 2025-08-04
+published: 2025-05-04
 description: "Some working experencines"
 image: ""
 tags: [DOTNET, CSharp]

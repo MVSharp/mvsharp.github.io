@@ -1,6 +1,6 @@
 ---
 title: "Understanding the Differences Between SendMessage and PostMessage in Windows Messaging"
-published: 2025-08-08
+published: 2025-02-08
 description: "notes"
 image: ""
 tags: [CSharp, WinAPI]
