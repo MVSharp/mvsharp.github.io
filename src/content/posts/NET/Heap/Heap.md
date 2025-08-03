@@ -10,3 +10,6 @@ lang: "en"
 ---
 
 FUCK YOU
+sorry I burnt out , I FUCK YOU Macau rubblish shitty place ?
+ASKING FOR RESPECT ? What the fuck you dont even respect me , how can i respect you ?
+Shouting out DOG SHITS is meaningless , FUCK YOU ALL MACAU SHITTY PEOPLE SHITTY Place
